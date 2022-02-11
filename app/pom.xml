@@ -32,7 +32,7 @@
                         <artifactId>customers</artifactId>
                         <version>0.0.1-SNAPSHOT</version>
                         <configuration>
-                            <appName>YOUR APP NAME COMES HERE</appName>
+                            <appName>customers</appName>
                             <includeTarget>false</includeTarget>
                             <includes>
                                 <include>app/target/app-0.0.1-SNAPSHOT.jar</include>
@@ -50,6 +50,18 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <excludes>
+                                <exclude>
+                                    <groupId>org.projectlombok</groupId>
+                                    <artifactId>lombok</artifactId>
+                                </exclude>
+                            </excludes>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
