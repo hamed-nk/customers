@@ -28,7 +28,7 @@
                     <appName>customers</appName>
                     <includeTarget>false</includeTarget>
                     <includes>
-                        <include>target/${full-artifact-name}</include>
+                        <include>app/${full-artifact-name}</include>
                     </includes>
                     <jdkVersion>11</jdkVersion>
                     <processTypes>
