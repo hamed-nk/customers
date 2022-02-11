@@ -4,9 +4,9 @@ spring:
   application:
     name: customers
   datasource:
-    username: amigoscode
-    password: password
-    url: jdbc:postgresql://localhost:5432/customer
+    username: odycijmjdqtjnj
+    password: 455a3c27ed5b4179c317d87f513b8362be96cd14f445099d31ba81ba972cdd81
+    url: jdbc:postgresql://ec2-54-157-160-218.compute-1.amazonaws.com:5432/d75oh60khp86ie
   jpa:
     properties:
       hibernate:
@@ -15,3 +15,4 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
