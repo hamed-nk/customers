@@ -6,7 +6,9 @@ import com.demico.customers.customers.request.CustomerRequest;
 import java.util.List;
 
 public interface CustomerService {
-    void save(CustomerRequest request);
+    Customer save(CustomerRequest request);
+
+    void saveByFraud(CustomerRequest request);
 
     List<Customer> getAll();
 

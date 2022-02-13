@@ -25,6 +25,12 @@ public class CustomerController {
         customerService.save(customerRequest);
     }
 
+    @PostMapping("/fraud")
+    public void registerCustomerByFraud(@RequestBody CustomerRequest customerRequest) {
+        log.info("New Customer By Fraud Registration {}", customerRequest);
+        customerService.saveByFraud(customerRequest);
+    }
+
     @GetMapping
     public ResponseEntity<Response> getCustomers() {
         return ResponseEntity.ok(

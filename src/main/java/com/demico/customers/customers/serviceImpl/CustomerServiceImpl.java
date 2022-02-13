@@ -3,10 +3,12 @@ package com.demico.customers.customers.serviceImpl;
 import com.demico.customers.customers.model.Customer;
 import com.demico.customers.customers.repository.CustomerRepository;
 import com.demico.customers.customers.request.CustomerRequest;
+import com.demico.customers.customers.response.FraudResponse;
 import com.demico.customers.customers.service.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
+    private RestTemplate restTemplate;
 
     public List<Customer> getByEmail(String email) {
         return customerRepository.getByEmail(email);
@@ -21,17 +24,32 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public void save(CustomerRequest request) {
+    public Customer save(CustomerRequest request) {
         Customer customer = Customer.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .build();
-        customerRepository.saveAndFlush(customer);
+        return customerRepository.saveAndFlush(customer);
+    }
+
+    @Override
+    @Transactional
+    public void saveByFraud(CustomerRequest request) {
+        Customer customer = save(request);
+        FraudResponse fraudResponse = restTemplate.getForObject(
+                "https://spring-fraud-backend.herokuapp.com/api/v1/fraud-check/{customerId}",
+                FraudResponse.class,
+                customer.getId()
+        );
+        if (fraudResponse.getIsFraudster()) {
+            throw new IllegalStateException("customer is fraud");
+        }
     }
 
     @Override
     public List<Customer> getAll() {
         return customerRepository.findAll();
     }
+
 }
