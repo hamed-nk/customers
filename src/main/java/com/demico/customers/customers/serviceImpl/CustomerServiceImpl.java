@@ -6,6 +6,7 @@ import com.demico.customers.customers.request.CustomerRequest;
 import com.demico.customers.customers.response.FraudResponse;
 import com.demico.customers.customers.service.CustomerService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
     private RestTemplate restTemplate;
@@ -37,14 +39,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public void saveByFraud(CustomerRequest request) {
         Customer customer = save(request);
+        log.info("end save", customer.getId());
         FraudResponse fraudResponse = restTemplate.getForObject(
-                "https://spring-fraud-backend.herokuapp.com/api/v1/fraud-check/{customerId}",
+                "http://localhost:8081/api/v1/fraud-check/{customerId}",
                 FraudResponse.class,
                 customer.getId()
         );
-        if (fraudResponse.getIsFraudster()) {
-            throw new IllegalStateException("customer is fraud");
-        }
+        log.info("end fraud");
     }
 
     @Override
