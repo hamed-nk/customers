@@ -41,7 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = save(request);
         log.info("end save", customer.getId());
         FraudResponse fraudResponse = restTemplate.getForObject(
-                "http://localhost:8081/api/v1/fraud-check/{customerId}",
+                "https://spring-fraud-backend.herokuapp.com/api/v1/fraud-check/{customerId}",
                 FraudResponse.class,
                 customer.getId()
         );
