@@ -25,6 +25,18 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public Customer getById(Long id) {
+        return customerRepository.findById(id).get();
+    }
+
+    @Override
+    public Boolean delete(Long id) {
+        Customer customer = customerRepository.findById(id).get();
+        customerRepository.delete(customer);
+        return Boolean.TRUE;
+    }
+
+    @Override
     @Transactional
     public Customer save(CustomerRequest request) {
         Customer customer = Customer.builder()
@@ -32,6 +44,16 @@ public class CustomerServiceImpl implements CustomerService {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .build();
+        return customerRepository.saveAndFlush(customer);
+    }
+
+    @Override
+    @Transactional
+    public Customer update(Long id, CustomerRequest request) {
+        Customer customer = customerRepository.findById(id).get();
+        customer.setFirstName(request.getFirstName());
+        customer.setLastName(request.getLastName());
+        customer.setEmail(request.getEmail());
         return customerRepository.saveAndFlush(customer);
     }
 
